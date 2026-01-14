@@ -1,20 +1,26 @@
-# Use an official Python runtime as a parent image
+# Use python-slim for a lightweight container
 FROM python:3.9-slim
 
-# Set the working directory in the container
+# Set environment variables to optimize Python for Docker
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install any needed packages specified in requirements.txt
+# Install Python requirements
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy all project folders (database, models, routes, static, templates, utils)
 COPY . .
 
-# Expose the port your flask/python app runs on (usually 5000)
+# Expose the Flask port
 EXPOSE 5000
 
-# Command to run the application
+# Start the application
 CMD ["python", "app.py"]
