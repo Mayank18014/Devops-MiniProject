@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Barcode Scanner</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+
+<h2>📦 Product Barcode Scanner</h2>
+
+<!-- CAMERA SCANNER -->
+<div id="reader" style="width:320px;"></div>
+
+<button onclick="startScanner()">Start Camera Scan</button>
+<button onclick="stopScanner()">Stop Camera</button>
+
+<hr style="margin:20px 0;">
+
+<!-- MANUAL INPUT -->
+<h3>🔢 Manual Barcode Entry</h3>
+<input type="text" id="manualBarcode" placeholder="Enter barcode number">
+<button onclick="scanManual()">Verify Product</button>
+
+<!-- RESULT -->
+<div id="result"></div>
+
+<script src="/static/js/scanner.js"></script>
+<script src="/static/js/api.js"></script>
+
+</body>
+</html>

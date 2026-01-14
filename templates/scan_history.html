@@ -1,0 +1,14 @@
+<h2>Scan History</h2>
+<a href="/products">Products</a> |
+<a href="/logout">Logout</a>
+<hr>
+
+<table border="1" cellpadding="5">
+<tr><th>Barcode</th><th>Time</th></tr>
+{% for h in history %}
+<tr>
+  <td>{{h[0]}}</td>
+  <td>{{h[1]}}</td>
+</tr>
+{% endfor %}
+</table>

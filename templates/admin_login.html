@@ -1,0 +1,25 @@
+<h2>Admin Login</h2>
+
+<input id="user" placeholder="Username"><br><br>
+<input id="pass" type="password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+<p id="msg"></p>
+
+<script>
+function login(){
+  fetch("/admin-login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      username:document.getElementById("user").value,
+      password:document.getElementById("pass").value
+    })
+  })
+  .then(r=>r.json())
+  .then(d=>{
+    if(d.status==="success") window.location="/admin";
+    else document.getElementById("msg").innerText=d.message;
+  });
+}
+</script>

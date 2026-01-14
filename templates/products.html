@@ -1,0 +1,51 @@
+<h2>Product List</h2>
+<a href="/admin">Add Product</a> |
+<a href="/logout">Logout</a>
+<hr>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Barcode</th>
+      <th>Name</th>
+      <th>Brand</th>
+      <th>Price</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for p in products %}
+    <tr>
+      <td>{{ p[0] }}</td>
+      <td>{{ p[1] }}</td>
+      <td>{{ p[2] }}</td>
+      <td>{{ p[3] }}</td>
+      <td>{{ p[4] }}</td>
+      <td><button type="button" onclick="deleteProduct({ p0 })">Delete</button></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<script>
+function deleteProduct(id) {
+  if (!confirm('Delete product #' + id + '?')) return;
+  fetch('/delete-product/' + id, {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ id: id })
+  })
+  .then(function(resp){
+    if (!resp.ok) throw new Error('Server returned ' + resp.status);
+    return resp.json().catch(function(){ return null; });
+  })
+  .then(function(){ location.reload(); })
+  .catch(function(err){
+    alert('Delete failed: ' + err.message);
+    console.error(err);
+  });
+}
+</script>
+
