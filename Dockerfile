@@ -1,26 +1,27 @@
-# Use python-slim for a lightweight container
-FROM python:3.9-slim
+# 1️⃣ Use Python base image
+FROM python:3.14-slim
 
-# Set environment variables to optimize Python for Docker
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-WORKDIR /app
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# 2️⃣ Install system packages required for mysqlclient
+RUN apt-get update && apt-get install -y \
     gcc \
+    pkg-config \
+    default-libmysqlclient-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python requirements
+# 3️⃣ Set working directory
+WORKDIR /app
+
+# 4️⃣ Copy requirements
 COPY requirements.txt .
+
+# 5️⃣ Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all project folders (database, models, routes, static, templates, utils)
+# 6️⃣ Copy full project
 COPY . .
 
-# Expose the Flask port
+# 7️⃣ Expose Flask port
 EXPOSE 5000
 
-# Start the application
+# 8️⃣ Run app
 CMD ["python", "app.py"]
