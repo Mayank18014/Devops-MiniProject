@@ -9,7 +9,7 @@ pipeline {
             }
         }
 
-        stage('Stop Old Container (if any)') {
+        stage('Stop Old Container') {
             steps {
                 bat '''
                 docker stop product-scanner-container || exit 0
@@ -18,9 +18,21 @@ pipeline {
             }
         }
 
-        stage('Run Application in Docker') {
+        stage('Run Application') {
             steps {
                 bat 'docker run -d -p 5000:5000 --name product-scanner-container product-scanner-app'
+            }
+        }
+
+        stage('Wait for App') {
+            steps {
+                sleep 10
+            }
+        }
+
+        stage('Run Selenium Test') {
+            steps {
+                bat 'python test_ui.py'
             }
         }
     }
