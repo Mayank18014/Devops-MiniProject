@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/Mayank18014/Devops-MiniProject.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 bat 'docker build -t product-scanner-app .'
