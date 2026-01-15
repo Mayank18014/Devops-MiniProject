@@ -1,22 +1,31 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+import unittest
 import time
+import os
 
-options = Options()
-options.add_argument("--headless")
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
+class UITest(unittest.TestCase):
 
-driver = webdriver.Chrome(options=options)
+    def setUp(self):
+        options = Options()
+        options.add_argument("--headless")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
-try:
-    driver.get("http://localhost:5000")
-    time.sleep(3)
+        self.driver = webdriver.Chrome()
+        self.driver.get("http://localhost:5000")
+        time.sleep(3)
 
-    if "Product" in driver.page_source or "Scanner" in driver.page_source:
-        print("UI Test Passed")
-    else:
-        raise Exception("UI Test Failed")
+    def test_homepage(self):
+        try:
+            self.assertIn("Product", self.driver.page_source)
+        except:
+            os.makedirs("screenshots", exist_ok=True)
+            self.driver.save_screenshot("screenshots/failure.png")
+            raise
 
-finally:
-    driver.quit()
+    def tearDown(self):
+        self.driver.quit()
+
+if __name__ == "__main__":
+    unittest.main()
