@@ -1,30 +1,28 @@
+import os
+import unittest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-import unittest
-import time
-import os
 
 class UITest(unittest.TestCase):
 
     def setUp(self):
-        chrome_options = Options()
-        chrome_options.add_argument("--headless=new")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--disable-gpu")
-        chrome_options.add_argument("--window-size=1920,1080")
+        # Ensure screenshots folder exists
+        os.makedirs("screenshots", exist_ok=True)
 
-        self.driver = webdriver.Chrome(options=chrome_options)
-        self.driver.get("http://localhost:5000")
-        time.sleep(3)
+        options = Options()
+        options.add_argument("--headless=new")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+
+        self.driver = webdriver.Chrome(options=options)
 
     def test_homepage(self):
-        try:
-            self.assertIn("Product", self.driver.page_source)
-        except:
-            os.makedirs("screenshots", exist_ok=True)
-            self.driver.save_screenshot("screenshots/failure.png")
-            raise
+        self.driver.get("http://localhost:5000")
+
+        # Take screenshot
+        self.driver.save_screenshot("screenshots/homepage.png")
+
+        self.assertIn("Product", self.driver.title)
 
     def tearDown(self):
         self.driver.quit()
