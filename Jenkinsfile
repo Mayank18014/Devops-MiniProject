@@ -76,16 +76,21 @@ pipeline {
             }
         }
 
+        stage('Copy Test Reports') {
+            steps {
+                bat 'docker cp product-scanner-container:/app . || exit 0'
+            }
+        }
+
+        stage('Publish Test Report') {
+            steps {
+                junit 'TEST-*.xml'
+            }
+        }
+
         stage('Copy Screenshots') {
             steps {
                 bat 'docker cp product-scanner-container:/app/screenshots . || exit 0'
             }
         }
 
-        stage('Publish Test Report') {
-            steps {
-                junit '**/TEST-*.xml'
-            }
-        }
-    }
-}
