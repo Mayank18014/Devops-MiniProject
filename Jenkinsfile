@@ -32,7 +32,7 @@ pipeline {
 
         stage('Run Selenium Test') {
             steps {
-                bat 'python test_ui.py'
+                bat 'docker exec product-scanner-container python test_ui.py'
             }
         }
     }
