@@ -44,9 +44,10 @@ pipeline {
 
         stage('Publish Test Report') {
             steps {
-                junit 'TEST-*.xml'
+                junit 'app/TEST*.xml'
             }
         }
+
 
         stage('Copy Screenshots') {
             steps {
