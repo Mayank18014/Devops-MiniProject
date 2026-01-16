@@ -196,7 +196,7 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)'''
 
 from flask import Flask, render_template, request, jsonify, Response
-import mysql.connector
+from flask_mysqldb import MySQL
 from datetime import datetime
 import time
 
