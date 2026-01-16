@@ -3,3 +3,4 @@ flask-mysqldb==2.0.0
 pymysql
 selenium
 unittest-xml-reporting
+prometheus-client
