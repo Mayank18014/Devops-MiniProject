@@ -1,23 +1,17 @@
 pipeline {
     agent any
 
-    tools {
-        sonarScanner 'SonarScanner'
-    }
-
     stages {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withSonarQubeEnv('SonarQubeServer') {
                     bat '''
                     sonar-scanner ^
-                      -Dsonar.projectKey=product-scanner ^
-                      -Dsonar.projectName=Product-Scanner ^
-                      -Dsonar.sources=. ^
-                      -Dsonar.language=py ^
-                      -Dsonar.python.version=3 ^
-                      -Dsonar.sourceEncoding=UTF-8
+                    -Dsonar.projectKey=product-scanner ^
+                    -Dsonar.projectName=ProductScanner ^
+                    -Dsonar.sources=. ^
+                    -Dsonar.language=py
                     '''
                 }
             }
