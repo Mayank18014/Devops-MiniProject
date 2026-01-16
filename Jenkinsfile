@@ -8,17 +8,21 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarScanner'
                     withSonarQubeEnv('SonarQubeServer') {
-                        bat """
-                        ${scannerHome}\\bin\\sonar-scanner ^
-                        -Dsonar.projectKey=product-scanner ^
-                        -Dsonar.projectName=ProductScanner ^
-                        -Dsonar.sources=. ^
-                        -Dsonar.language=py
-                        """
+                        withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                            bat """
+                            ${scannerHome}\\bin\\sonar-scanner ^
+                            -Dsonar.projectKey=product-scanner ^
+                            -Dsonar.projectName=ProductScanner ^
+                            -Dsonar.sources=. ^
+                            -Dsonar.language=py ^
+                            -Dsonar.login=%SONAR_TOKEN%
+                            """
+                        }
                     }
                 }
             }
         }
+
 
         stage('Build Docker Image') {
             steps {
