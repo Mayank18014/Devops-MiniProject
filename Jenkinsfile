@@ -1,7 +1,27 @@
 pipeline {
     agent any
 
+    tools {
+        sonarScanner 'SonarScanner'
+    }
+
     stages {
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    bat '''
+                    sonar-scanner ^
+                      -Dsonar.projectKey=product-scanner ^
+                      -Dsonar.projectName=Product-Scanner ^
+                      -Dsonar.sources=. ^
+                      -Dsonar.language=py ^
+                      -Dsonar.python.version=3 ^
+                      -Dsonar.sourceEncoding=UTF-8
+                    '''
+                }
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -48,12 +68,10 @@ pipeline {
             }
         }
 
-
         stage('Copy Screenshots') {
             steps {
                 bat 'docker cp product-scanner-container:/app/screenshots . || exit 0'
             }
         }
-
     }
 }
