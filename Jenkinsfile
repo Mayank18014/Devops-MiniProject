@@ -5,14 +5,17 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQubeServer') {
-                    bat '''
-                    sonar-scanner ^
-                    -Dsonar.projectKey=product-scanner ^
-                    -Dsonar.projectName=ProductScanner ^
-                    -Dsonar.sources=. ^
-                    -Dsonar.language=py
-                    '''
+                script {
+                    def scannerHome = tool 'SonarScanner'
+                    withSonarQubeEnv('SonarQubeServer') {
+                        bat """
+                        ${scannerHome}\\bin\\sonar-scanner ^
+                        -Dsonar.projectKey=product-scanner ^
+                        -Dsonar.projectName=ProductScanner ^
+                        -Dsonar.sources=. ^
+                        -Dsonar.language=py
+                        """
+                    }
                 }
             }
         }
